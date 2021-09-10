@@ -13,7 +13,6 @@ export const pullFrom = () => {
 
     try {
       let results = await fetchRequest();
-      console.log(results)
       // Success state: Replace the cart with what's fetched, then render
       dispatch(cartActions.replaceCart(results));
     } catch (errorObj) {

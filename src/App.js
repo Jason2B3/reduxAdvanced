@@ -17,35 +17,45 @@ function App() {
   const notification = useSelector((state) => state.ui.notification); // ui-slice.js
   //% On startup, fetch items saved in Firebase
   useEffect(() => {
-  
-    dispatch(pullFrom())
-  }, [dispatch]);
+    dispatch(pullFrom());
+    console.log("on mount ran!")
+  }, []);
   //% When the "cart" is updated in Redux, send the new cart to Firebase
   useEffect(() => {
     if (isInitial) {
       isInitial = false;
       return;
     }
-    console.log("useEffect ran!");
+    console.log("cart update ran!", isInitial);
     dispatch(sendCartData(cart));
     // use our thunk to dispatch async code along with ui-slice's showNotification reducer function
-  }, [cart, dispatch]);
+  }, [cart]);
   // this re-executes when Redux store's item KVP gets updated via a dispatched action
-  return (
-    <>
-      {notification && (
-        <Notification
-          status={notification.status}
-          title={notification.title}
-          message={notification.message}
-        />
-      )}
+  console.log(isInitial, "render prep");
+  if (isInitial) {
+    return (
       <Layout>
         {showCart && <Cart />}
         <Products />
       </Layout>
-    </>
-  );
+    );
+  } else {
+    return (
+      <>
+        {/* {notification && (
+          <Notification
+            status={notification.status}
+            title={notification.title}
+            message={notification.message}
+          />
+        )} */}
+        <Layout>
+          {showCart && <Cart />}
+          <Products />
+        </Layout>
+      </>
+    );
+  }
 }
 
 export default App;
