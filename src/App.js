@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import React, { useEffect } from "react";
 import { sendCartData } from "./store/async-cart/sendto";
+import { pullFrom } from "./store/async-cart/pullFrom";
 import Cart from "./components/Cart/Cart";
 import Layout from "./components/Layout/Layout";
 import Products from "./components/Shop/Products";
@@ -14,7 +15,11 @@ function App() {
   const showCart = useSelector((state) => state.ui.cartIsVisible); // ui-slice.js
   const cart = useSelector((state) => state.cart); // cart-slice.js
   const notification = useSelector((state) => state.ui.notification); // ui-slice.js
-
+  //% On startup, fetch items saved in Firebase
+  useEffect(() => {
+  
+    dispatch(pullFrom())
+  }, [dispatch]);
   //% When the "cart" is updated in Redux, send the new cart to Firebase
   useEffect(() => {
     if (isInitial) {
