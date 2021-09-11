@@ -29,7 +29,7 @@ function App() {
       return;
     }
     console.log("cart update ran successfully!");
-    dispatch(sendCartData(cart));
+    dispatch(sendCartData(cart, true));
     // use our thunk to dispatch async code along with ui-slice's showNotification reducer function
   }, [cart]);
   // this re-executes when Redux store's item KVP gets updated via a dispatched action
