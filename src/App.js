@@ -17,22 +17,25 @@ function App() {
   const notification = useSelector((state) => state.ui.notification); // ui-slice.js
   //% On startup, fetch items saved in Firebase
   useEffect(() => {
-    dispatch(pullFrom());
-    console.log("on mount ran!")
+    dispatch(pullFrom()); // changes a Redux store value
+    console.log("on mount ran!");
   }, []);
   //% When the "cart" is updated in Redux, send the new cart to Firebase
   useEffect(() => {
+    //! comment out to eliminate navbar glow altogether
     if (isInitial) {
       isInitial = false;
+      console.log("cart update ran but failed!");
       return;
     }
-    console.log("cart update ran!", isInitial);
+    console.log("cart update ran successfully!");
     dispatch(sendCartData(cart));
     // use our thunk to dispatch async code along with ui-slice's showNotification reducer function
   }, [cart]);
   // this re-executes when Redux store's item KVP gets updated via a dispatched action
-  console.log(isInitial, "render prep");
+  console.log("this being my first render is", isInitial);
   if (isInitial) {
+    console.log("JSX WITHOUT navbar glow");
     return (
       <Layout>
         {showCart && <Cart />}
@@ -40,15 +43,16 @@ function App() {
       </Layout>
     );
   } else {
+    console.log("JSX WITH navbar glow");
     return (
       <>
-        {/* {notification && (
+        {notification && (
           <Notification
             status={notification.status}
             title={notification.title}
             message={notification.message}
           />
-        )} */}
+        )}
         <Layout>
           {showCart && <Cart />}
           <Products />
