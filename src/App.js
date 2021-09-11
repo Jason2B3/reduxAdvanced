@@ -18,24 +18,24 @@ function App() {
   //% On startup, fetch items saved in Firebase
   useEffect(() => {
     dispatch(pullFrom()); // changes a Redux store value
-    console.log("on mount ran!");
+    // console.log("on mount ran!");
   }, []);
   //% When the "cart" is updated in Redux, send the new cart to Firebase
   useEffect(() => {
     //! comment out to eliminate navbar glow altogether
     if (isInitial) {
       isInitial = false;
-      console.log("cart update ran but failed!");
+      // console.log("cart update ran but failed!");
       return;
     }
-    console.log("cart update ran successfully!");
+    // console.log("cart update ran successfully!");
     dispatch(sendCartData(cart, true));
     // use our thunk to dispatch async code along with ui-slice's showNotification reducer function
   }, [cart]);
   // this re-executes when Redux store's item KVP gets updated via a dispatched action
-  console.log("this being my first render is", isInitial);
+  // console.log("this being my first render is", isInitial);
   if (isInitial) {
-    console.log("JSX WITHOUT navbar glow");
+    // console.log("JSX WITHOUT navbar glow");
     return (
       <Layout>
         {showCart && <Cart />}
@@ -43,7 +43,7 @@ function App() {
       </Layout>
     );
   } else {
-    console.log("JSX WITH navbar glow");
+    // console.log("JSX WITH navbar glow");
     return (
       <>
         {notification && (

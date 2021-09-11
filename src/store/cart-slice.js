@@ -17,7 +17,11 @@ const cartSlice = createSlice({
     addItemToCart(state, action) {
       const newItem = action.payload;
       // Returns the item object if it exists in the cart already
-      const existingItem = state.items.find((item) => item.id === newItem.id);
+      console.log(state.items);
+      let existingItem;
+      if (state.items === undefined) existingItem = [];
+      else existingItem = state.items.find((item) => item.id === newItem.id);
+
       state.totalQuantity++;
       // state.changed=true;
       if (!existingItem) {
