@@ -1,14 +1,20 @@
-import { useSelector, useDispatch } from "react-redux";
 import React, { useEffect } from "react";
+// Redux-related imports
+import { useSelector, useDispatch } from "react-redux";
 import { sendCartData } from "./store/async-cart/sendto";
 import { pullFrom } from "./store/async-cart/pullFrom";
+// Context API imports
+import { useCustomHook } from "./context";
+// Component Imports
 import Cart from "./components/Cart/Cart";
 import Layout from "./components/Layout/Layout";
 import Products from "./components/Shop/Products";
 import Notification from "./components/UI/Notification";
+
 let isInitial = true;
 
 function App() {
+  const { navGlow } = useCustomHook(); // see explanation for this variable at the bottom
   const dispatch = useDispatch();
 
   // Access Redux store variables (check the slice files)
@@ -18,32 +24,26 @@ function App() {
   //% On startup, fetch items saved in Firebase
   useEffect(() => {
     dispatch(pullFrom()); // changes a Redux store value
-    // console.log("on mount ran!");
   }, []);
   //% When the "cart" is updated in Redux, send the new cart to Firebase
   useEffect(() => {
-    //! comment out to eliminate navbar glow altogether
     if (isInitial) {
       isInitial = false;
-      // console.log("cart update ran but failed!");
       return;
     }
-    // console.log("cart update ran successfully!");
-    dispatch(sendCartData(cart, true));
+    dispatch(sendCartData(cart)); 
     // use our thunk to dispatch async code along with ui-slice's showNotification reducer function
   }, [cart]);
   // this re-executes when Redux store's item KVP gets updated via a dispatched action
-  // console.log("this being my first render is", isInitial);
-  if (isInitial) {
-    // console.log("JSX WITHOUT navbar glow");
+  if (navGlow === false) {
     return (
       <Layout>
         {showCart && <Cart />}
         <Products />
       </Layout>
     );
-  } else {
-    // console.log("JSX WITH navbar glow");
+  }
+  if (navGlow === true) {
     return (
       <>
         {notification && (
@@ -63,3 +63,15 @@ function App() {
 }
 
 export default App;
+
+//# EXPLANATIONS
+/*
+Nav glow is a context API variable that starts off as false on startup
+Gets set to true after we add/subtract cart items via the Add to Cart button on ProfductItem.js
+Gets set to true by pressing the + - buttons in cartItem.js as well
+
+Navglow= true   means we should render success/failure/pending on the navbar
+navGlow= false  means we shouldn't
+
+We don't want the navbar to have a "Successfully sent data" message rendered on startup when we fetch our cart items
+*/

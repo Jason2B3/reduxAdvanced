@@ -1,17 +1,19 @@
 // Enable Redux dispatching
 import { useDispatch } from "react-redux";
 import { cartActions } from "../../store/cart-slice";
-
 import Card from "../UI/Card";
 import classes from "./ProductItem.module.css";
+import { useCustomHook } from "../../context"; // context API
 
 const ProductItem = (props) => {
+  const { enableNavGlow } = useCustomHook(); // context API
   const dispatch = useDispatch();
 
   // Purchasable item details given via props from Product.js
   const { title, price, description, id } = props;
 
   const addToCartHandler = () => {
+    enableNavGlow();
     // dispatch Redux's addItemToCart method, and provide item details via payload
     dispatch(
       cartActions.addItemToCart({

@@ -1,13 +1,18 @@
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-
-import store from './store/index';
-import './index.css';
-import App from './App';
+// Regular React imports
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+// Redux imports
+import { Provider } from "react-redux";
+import store from "./store/index";
+// ContextAPI imports
+import BBB from "./context"
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root')
+  <BBB>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </BBB>,
+  document.getElementById("root")
 );

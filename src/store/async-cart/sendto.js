@@ -1,7 +1,7 @@
 import { uiActions } from "../ui-slice"; //% import from a sibling slice file
 
 // Define a function that returns an async function
-export const sendCartData = (cart, onStartup = false) => {
+export const sendCartData = (cart) => {
   // cart will be cart-slice.js' items KVP in the state object
   return async function (dispatch) {
     // This helper FN dispatches one of ui-slice's reducer functions
@@ -14,7 +14,6 @@ export const sendCartData = (cart, onStartup = false) => {
         })
       );
     }
-    uiSlice_showNotif("pending", "Sending...", "Sending cart data");
 
     // This nested function expression should take care of any async operations
     const fetchRequest = async () => {
@@ -29,15 +28,9 @@ export const sendCartData = (cart, onStartup = false) => {
     };
 
     try {
+      uiSlice_showNotif("pending", "Sending...", "Sending cart data");
       await fetchRequest(); // make the fetch request
-      if (onStartup) dispatch(uiActions.skipNotification());
-      else {
-        uiSlice_showNotif(
-          "success",
-          "Success!",
-          "Sent cart data successfully!"
-        );
-      }
+      uiSlice_showNotif("success", "Success!", "Sent cart data successfully!");
     } catch (errorObj) {
       uiSlice_showNotif("error", "Error!!", "Could not send cart data!");
     }
